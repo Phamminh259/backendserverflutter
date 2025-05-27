@@ -20,23 +20,29 @@ public class CloudinaryService {
 
     @SuppressWarnings("rawtypes")
     public Map uploadImage(MultipartFile file, String folderName) throws IOException {
+        // Upload ảnh, resource_type mặc định là image
         return cloudinary.uploader().upload(file.getBytes(),
                 ObjectUtils.asMap(
-                        "Images", folderName));
+                        "folder", folderName));
     }
+
     @SuppressWarnings("rawtypes")
     public Map uploadFileImage(File file, String folderName) throws IOException {
-        return cloudinary.uploader().upload(file.isFile(),
+        // Upload ảnh từ File, resource_type mặc định image
+        return cloudinary.uploader().upload(file,
                 ObjectUtils.asMap(
-                        "Images", folderName));
+                        "folder", folderName));
     }
 
     @SuppressWarnings("rawtypes")
     public Map uploadCV(MultipartFile file, String folderName) throws IOException {
+        // Upload file CV (pdf, doc...), phải để resource_type=raw mới xem được preview chuẩn
         return cloudinary.uploader().upload(file.getBytes(),
                 ObjectUtils.asMap(
-                        "Images", folderName));
+                        "resource_type", "raw",
+                        "folder", folderName));
     }
+
     public void deleteImage(String publicId) {
         try {
             cloudinary.uploader().destroy(publicId, null);
